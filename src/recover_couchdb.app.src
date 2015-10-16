@@ -1,0 +1,14 @@
+{application, recover_couchdb,
+ [
+  {description, "An Erlang recover_couchdb library"},
+  {vsn, "1"},
+  {modules, [
+             recover_couchdb
+            ]},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
