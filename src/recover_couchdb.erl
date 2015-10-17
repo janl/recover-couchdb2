@@ -10,23 +10,24 @@
 
 %% API
 
-main(DbFile) ->
+main([DbFile]) ->
+    main([DbFile, 0]);
+main([DbFile, StartFrom]) ->
+    io:format("~nrecover_couchdb: ~p, StartFrom: ~p~n", [DbFile, StartFrom]),
     DatabaseName = filename:basename(DbFile, ".couch"),
     PathToDbFile = filename:absname(DbFile),
-    start(DatabaseName, PathToDbFile).
+    start(DatabaseName, PathToDbFile, list_to_integer(StartFrom)).
 
 %% Internals
 
-start(_DbName, FullPath) ->
+start(_DbName, FullPath, StartFrom) ->
     % io:format("~nload_nif: ~p~n", [R]),
     {ok, Fd} = file:open(FullPath, [read]),
     {ok, Db} = couch_file:open(FullPath),
     io:format("Fd: ~p ~n", [Fd]),
     % io:format("Fileinfo: ~p ~n", [file:read_file_info(FullPath)]),
-    read_chunks(Fd, Db).
+    read_chunks(Fd, Db, StartFrom).
 
-read_chunks(Fd, Db) ->
-    read_chunks(Fd, Db, 0).
 read_chunks(Fd, Db, Pos) ->
     % print some progress
     case Pos rem (1000 * 100) of
