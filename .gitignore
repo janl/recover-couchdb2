@@ -1,3 +1,4 @@
 ebin
 recover_couchdb
 .rebar
+erl_crash.dump
